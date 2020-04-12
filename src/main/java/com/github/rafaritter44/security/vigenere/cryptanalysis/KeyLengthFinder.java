@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface KeyLengthFinder {
 	
-	List<Integer> findKeyLength(String ciphertext);
+	List<Integer> findKeyLengths(String ciphertext);
 	
 }

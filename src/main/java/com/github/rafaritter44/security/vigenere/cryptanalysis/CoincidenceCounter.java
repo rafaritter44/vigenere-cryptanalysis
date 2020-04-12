@@ -23,7 +23,7 @@ public class CoincidenceCounter implements KeyLengthFinder {
 	}
 	
 	@Override
-	public List<Integer> findKeyLength(final String ciphertext) {
+	public List<Integer> findKeyLengths(final String ciphertext) {
 		return IntStream
 				.rangeClosed(1, maxKeyLength)
 				.parallel()
