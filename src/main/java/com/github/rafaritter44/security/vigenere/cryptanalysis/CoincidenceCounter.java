@@ -4,7 +4,7 @@ import static java.lang.Math.abs;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toConcurrentMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,9 @@ public class CoincidenceCounter implements KeyLengthFinder {
 	public List<Integer> findKeyLength(final String ciphertext) {
 		return IntStream
 				.rangeClosed(1, maxKeyLength)
+				.parallel()
 				.boxed()
-				.collect(toMap(identity(), keyLength -> calculateCoincidenceIndex(ciphertext, keyLength)))
+				.collect(toConcurrentMap(identity(), keyLength -> calculateCoincidenceIndex(ciphertext, keyLength)))
 				.entrySet()
 				.parallelStream()
 				.sorted(comparing(index -> abs(actualCoincidenceIndex - index.getValue())))
@@ -51,8 +52,9 @@ public class CoincidenceCounter implements KeyLengthFinder {
 				.mapToDouble(chunk -> {
 					final Map<Character, Integer> letterFrequencies = chunk
 						.chars()
+						.parallel()
 						.mapToObj(letter -> (char) letter)
-						.collect(toMap(identity(), letter -> 1, Integer::sum));
+						.collect(toConcurrentMap(identity(), letter -> 1, Integer::sum));
 					return calculateCoincidenceIndex(letterFrequencies, chunk.length());
 				})
 				.average()
