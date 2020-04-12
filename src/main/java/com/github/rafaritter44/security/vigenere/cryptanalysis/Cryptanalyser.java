@@ -1,5 +1,6 @@
 package com.github.rafaritter44.security.vigenere.cryptanalysis;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -21,7 +22,7 @@ public class Cryptanalyser {
 	private String ciphertext;
 	private List<Integer> keyLengths;
 	
-	private Cryptanalyser(
+	public Cryptanalyser(
 			final KeyLengthFinder keyLengthFinder,
 			final FrequencyAnalyzer frequencyAnalyzer,
 			final CiphertextSplitter ciphertextSplitter) {
@@ -46,6 +47,13 @@ public class Cryptanalyser {
 		if (ciphertext != null) {
 			keyLengths = keyLengthFinder.findKeyLengths(ciphertext);
 		}
+	}
+	
+	public List<Integer> getKeyLengths() {
+		if (keyLengths == null) {
+			return emptyList();
+		}
+		return keyLengths;
 	}
 	
 	public void setCiphertext(final String ciphertext) {
