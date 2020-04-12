@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.github.rafaritter44.security.vigenere.cryptanalysis.Cryptanalyser;
 import com.github.rafaritter44.security.vigenere.cryptanalysis.decrypt.FrequencyAnalyzer;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.io.FileManager;
 import com.github.rafaritter44.security.vigenere.cryptanalysis.keylength.CoincidenceCounter;
 import com.github.rafaritter44.security.vigenere.cryptanalysis.keylength.KeyLengthFinder;
 import com.github.rafaritter44.security.vigenere.cryptanalysis.util.CiphertextSplitter;
@@ -41,6 +42,11 @@ public class CryptanalysisConfig {
 	@Bean
 	public CiphertextSplitter ciphertextSplitter() {
 		return new CiphertextSplitter();
+	}
+	
+	@Bean
+	public FileManager fileManager() {
+		return new FileManager();
 	}
 	
 	@Bean("portugueseLetterFrequencies")

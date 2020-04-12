@@ -9,6 +9,9 @@ import java.io.InputStream;
 public class FileManager {
 	
 	public String read(final String file) {
+		if (file == null || file.isEmpty()) {
+			return "";
+		}
 		final InputStream inputStream = FileManager.class.getResourceAsStream(file);
 		final ByteArrayOutputStream result = new ByteArrayOutputStream();
 		final byte[] buffer = new byte[1024];
