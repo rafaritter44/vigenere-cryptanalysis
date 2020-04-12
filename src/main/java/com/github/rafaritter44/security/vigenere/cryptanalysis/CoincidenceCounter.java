@@ -6,6 +6,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toConcurrentMap;
 import static java.util.stream.Collectors.toList;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,9 @@ public class CoincidenceCounter implements KeyLengthFinder {
 	
 	@Override
 	public List<Integer> findKeyLengths(final String ciphertext) {
+		if (ciphertext == null) {
+			return Collections.emptyList();
+		}
 		return IntStream
 				.rangeClosed(1, maxKeyLength)
 				.parallel()
