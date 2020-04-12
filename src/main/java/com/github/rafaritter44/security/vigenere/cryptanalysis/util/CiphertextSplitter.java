@@ -1,4 +1,4 @@
-package com.github.rafaritter44.security.vigenere.cryptanalysis;
+package com.github.rafaritter44.security.vigenere.cryptanalysis.util;
 
 import java.util.ArrayList;
 import java.util.List;

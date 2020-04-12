@@ -1,4 +1,4 @@
-package com.github.rafaritter44.security.vigenere.cryptanalysis;
+package com.github.rafaritter44.security.vigenere.cryptanalysis.keylength;
 
 import static java.lang.Math.abs;
 import static java.util.Comparator.comparing;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.IntStream;
+
+import com.github.rafaritter44.security.vigenere.cryptanalysis.util.CiphertextSplitter;
 
 public class CoincidenceCounter implements KeyLengthFinder {
 	

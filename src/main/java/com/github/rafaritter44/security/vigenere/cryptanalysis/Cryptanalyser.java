@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.rafaritter44.security.vigenere.cryptanalysis.decrypt.FrequencyAnalyzer;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.keylength.KeyLengthFinder;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.util.CiphertextSplitter;
+
 public class Cryptanalyser {
 	
 	private final KeyLengthFinder keyLengthFinder;

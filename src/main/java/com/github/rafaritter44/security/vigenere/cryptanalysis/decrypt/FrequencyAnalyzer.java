@@ -1,4 +1,4 @@
-package com.github.rafaritter44.security.vigenere.cryptanalysis;
+package com.github.rafaritter44.security.vigenere.cryptanalysis.decrypt;
 
 import static java.util.Map.Entry.comparingByValue;
 import static java.util.function.Function.identity;
