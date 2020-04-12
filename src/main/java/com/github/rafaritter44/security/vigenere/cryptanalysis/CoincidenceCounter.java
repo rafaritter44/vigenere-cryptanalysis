@@ -35,7 +35,7 @@ public class CoincidenceCounter implements KeyLengthFinder {
 				.collect(toList());
 	}
 	
-	private double calculateCoincidenceIndex(final String ciphertext, int keyLength) {
+	private double calculateCoincidenceIndex(final String ciphertext, final int keyLength) {
 		final ArrayList<String> splitCiphertext = new ArrayList<>();
 		for (int i = 0; i < keyLength; i++) {
 			splitCiphertext.add("");
