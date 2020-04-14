@@ -1,6 +1,7 @@
 package com.github.rafaritter44.security.vigenere.cryptanalysis;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -19,8 +20,12 @@ public class VigenereCryptanalysis {
 		final AnnotationConfigApplicationContext appCtxt = new AnnotationConfigApplicationContext(CryptanalysisConfig.class);
 		final Cryptanalyser cryptanalyser = appCtxt.getBean(Cryptanalyser.class);
 		final FileManager fileManager = appCtxt.getBean(FileManager.class);
-		final String ciphertext = fileManager.read(args[CIPHERTEXT]);
-		cryptanalyser.setCiphertext(ciphertext);
+		final Optional<String> ciphertext = fileManager.read(args[CIPHERTEXT]);
+		if (!ciphertext.isPresent()) {
+			System.err.println("No such file: " + args[CIPHERTEXT]);
+			System.exit(1);
+		}
+		cryptanalyser.setCiphertext(ciphertext.get());
 		cryptanalyser.findKeyLengths();
 		final List<Integer> keyLengths = cryptanalyser.getKeyLengths();
 		final int amountOfKeyLengths = keyLengths.size();
