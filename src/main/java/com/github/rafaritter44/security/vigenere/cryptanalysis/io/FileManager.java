@@ -23,7 +23,7 @@ public class FileManager {
 			while ((length = inputStream.read(buffer)) != -1) {
 				result.write(buffer, 0, length);
 			}
-			return Optional.of(result.toString(UTF_8.name()));
+			return Optional.of(result.toString(UTF_8.name()).trim());
 		} catch (final FileNotFoundException e) {
 			return Optional.empty();
 		} catch (final IOException e) {
