@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -9,4 +10,15 @@ repositories {
 
 dependencies {
 	implementation group: 'org.springframework', name: 'spring-context', version: '5.2.5.RELEASE'
+}
+
+mainClassName = 'com.github.rafaritter44.security.vigenere.cryptanalysis.VigenereCryptanalysis'
+
+jar {
+	manifest {
+		attributes 'Main-Class': mainClassName
+	}
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
 }
