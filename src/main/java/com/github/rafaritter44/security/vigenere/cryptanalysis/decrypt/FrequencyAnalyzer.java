@@ -40,13 +40,13 @@ public class FrequencyAnalyzer {
 				})
 				.sorted(comparingByValue())
 				.collect(toConcurrentMap(Entry::getKey, Entry::getValue));
-		if (letterFrequencies.size() != this.letterFrequencies.size()) {
-			throw new DifferentAlphabetSizesException(letterFrequencies.size(), this.letterFrequencies.size());
+		if (letterFrequencies.size() > this.letterFrequencies.size()) {
+			throw new IllegalArgumentException("The ciphertext alphabet is larger than that of the actual language");
 		}
 		final Map<Character, Character> ciphertextToPlaintext = new ConcurrentHashMap<>();
-		final Iterator<Character> encryptedLetters = letterFrequencies.keySet().iterator();
-		for (final Character plaintextLetter : this.letterFrequencies.keySet()) {
-			ciphertextToPlaintext.put(encryptedLetters.next(), plaintextLetter);
+		final Iterator<Character> plaintextLetters = this.letterFrequencies.keySet().iterator();
+		for (final Character encryptedLetter : letterFrequencies.keySet()) {
+			ciphertextToPlaintext.put(encryptedLetter, plaintextLetters.next());
 		}
 		return ciphertext
 				.chars()
