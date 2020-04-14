@@ -3,8 +3,8 @@ package com.github.rafaritter44.security.vigenere.cryptanalysis.keylength;
 import static java.lang.Math.abs;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toConcurrentMap;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +38,7 @@ public class CoincidenceCounter implements KeyLengthFinder {
 				.rangeClosed(1, maxKeyLength)
 				.parallel()
 				.boxed()
-				.collect(toConcurrentMap(identity(), keyLength -> calculateCoincidenceIndex(ciphertext, keyLength)))
+				.collect(toMap(identity(), keyLength -> calculateCoincidenceIndex(ciphertext, keyLength)))
 				.entrySet()
 				.parallelStream()
 				.sorted(comparing(index -> abs(actualCoincidenceIndex - index.getValue())))
@@ -55,7 +55,7 @@ public class CoincidenceCounter implements KeyLengthFinder {
 						.chars()
 						.parallel()
 						.mapToObj(letter -> (char) letter)
-						.collect(toConcurrentMap(identity(), letter -> 1, Integer::sum));
+						.collect(toMap(identity(), letter -> 1, Integer::sum));
 					return calculateCoincidenceIndex(letterFrequencies, chunk.length());
 				})
 				.average()

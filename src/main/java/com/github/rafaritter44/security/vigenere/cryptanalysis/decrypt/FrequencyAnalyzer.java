@@ -3,9 +3,10 @@ package com.github.rafaritter44.security.vigenere.cryptanalysis.decrypt;
 import static java.util.Map.Entry.comparingByValue;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collector.of;
-import static java.util.stream.Collectors.toConcurrentMap;
+import static java.util.stream.Collectors.toMap;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +20,7 @@ public class FrequencyAnalyzer {
 				.entrySet()
 				.parallelStream()
 				.sorted(comparingByValue())
-				.collect(toConcurrentMap(Entry::getKey, Entry::getValue));
+				.collect(toMap(Entry::getKey, Entry::getValue, (a,b) -> a, LinkedHashMap::new));
 	}
 	
 	public String decrypt(final String ciphertext) {
@@ -31,7 +32,7 @@ public class FrequencyAnalyzer {
 				.chars()
 				.parallel()
 				.mapToObj(letter -> (char) letter)
-				.collect(toConcurrentMap(identity(), letter -> 1D, Double::sum))
+				.collect(toMap(identity(), letter -> 1D, Double::sum))
 				.entrySet()
 				.parallelStream()
 				.map(kv -> {
@@ -39,7 +40,7 @@ public class FrequencyAnalyzer {
 					return kv;
 				})
 				.sorted(comparingByValue())
-				.collect(toConcurrentMap(Entry::getKey, Entry::getValue));
+				.collect(toMap(Entry::getKey, Entry::getValue, (a,b) -> a, LinkedHashMap::new));
 		if (letterFrequencies.size() > this.letterFrequencies.size()) {
 			throw new IllegalArgumentException("The ciphertext alphabet is larger than that of the actual language");
 		}
