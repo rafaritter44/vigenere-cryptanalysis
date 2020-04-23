@@ -1,4 +1,4 @@
-package com.github.rafaritter44.security.vigenere.cryptanalysis.keylength;
+package com.github.rafaritter44.security.vigenere.cryptanalysis.key.length;
 
 import static java.lang.Math.abs;
 import static java.util.Comparator.comparing;
@@ -64,12 +64,12 @@ public class CoincidenceCounter implements KeyLengthFinder {
 	
 	private double calculateCoincidenceIndex(
 			final Map<Character, Integer> letterFrequencies,
-			final int textLength) {
+			final double textLength) {
 		return textLength == 0 ? 0D : letterFrequencies
 				.values()
 				.parallelStream()
 				.mapToDouble(letterFrequency -> letterFrequency * (letterFrequency - 1D))
-				.sum() / (textLength * (textLength - 1));
+				.sum() / (textLength * (textLength - 1D));
 	}
 	
 }

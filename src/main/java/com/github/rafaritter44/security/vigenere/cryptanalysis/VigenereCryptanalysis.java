@@ -32,8 +32,13 @@ public class VigenereCryptanalysis {
 		final int amountOfKeyLengths = keyLengths.size();
 		final Scanner scanner = new Scanner(System.in);
 		for (int i = 0; i < amountOfKeyLengths; i++) {
-			cryptanalyser.decrypt(keyLengths.get(i)).ifPresent(plaintext -> {
+			final int keyLengthIndex = i;
+			cryptanalyser.findKeys(i);
+			cryptanalyser.decrypt(i).ifPresent(plaintext -> {
 				System.out.println(plaintext);
+				final int keyLength = keyLengths.get(keyLengthIndex);
+				System.out.printf("Key length: %d\n", keyLength);
+				System.out.printf("Key: %s\n", cryptanalyser.getKey());
 				System.out.println("Is that it? (y/n)");
 				if ("y".equalsIgnoreCase(scanner.nextLine())) {
 					final String plaintextFile = args[CIPHERTEXT].replace(".", ".plaintext.");
@@ -42,6 +47,41 @@ public class VigenereCryptanalysis {
 					scanner.close();
 					appCtxt.close();
 					System.exit(0);
+				}
+				System.out.println("Try another key length? (y/n)");
+				if (!"y".equalsIgnoreCase(scanner.nextLine())) {
+					while (true) {
+						System.out.printf("Change which letter from the key? [0-%d]\n", keyLength - 1);
+						final String input = scanner.nextLine();
+						if (input.matches("[0-9]+")) {
+							final int keyLetterIndex = Integer.parseInt(input);
+							final Optional<String> newPlaintext = cryptanalyser.decrypt(keyLengthIndex, keyLetterIndex);
+							if (newPlaintext.isPresent()) {
+								System.out.println(newPlaintext.get());
+								System.out.printf("Key: %s\n", cryptanalyser.getKey());
+								System.out.println("Is that it? (y/n)");
+								if ("y".equalsIgnoreCase(scanner.nextLine())) {
+									final String plaintextFile = args[CIPHERTEXT].replace(".", ".plaintext.");
+									fileManager.write(plaintextFile, newPlaintext.get());
+									System.out.println("Plaintext written to " + plaintextFile);
+									scanner.close();
+									appCtxt.close();
+									System.exit(0);
+								} else {
+									System.out.println("Try another key length? (y/n)");
+									if ("y".equalsIgnoreCase(scanner.nextLine())) {
+										break;
+									}
+								}
+							} else {
+								System.out.println("No options left for that letter.");
+								System.out.println("Try another key length? (y/n)");
+								if ("y".equalsIgnoreCase(scanner.nextLine())) {
+									break;
+								}
+							}
+						}
+					}
 				}
 			});
 		}

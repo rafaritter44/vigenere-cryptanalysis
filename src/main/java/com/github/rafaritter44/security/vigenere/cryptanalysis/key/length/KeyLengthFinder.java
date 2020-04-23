@@ -1,4 +1,4 @@
-package com.github.rafaritter44.security.vigenere.cryptanalysis.keylength;
+package com.github.rafaritter44.security.vigenere.cryptanalysis.key.length;
 
 import java.util.List;
 

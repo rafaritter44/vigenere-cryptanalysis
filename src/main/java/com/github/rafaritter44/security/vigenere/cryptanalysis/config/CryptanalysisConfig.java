@@ -8,10 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.github.rafaritter44.security.vigenere.cryptanalysis.Cryptanalyser;
-import com.github.rafaritter44.security.vigenere.cryptanalysis.decrypt.FrequencyAnalyzer;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.VigenereSquare;
 import com.github.rafaritter44.security.vigenere.cryptanalysis.io.FileManager;
-import com.github.rafaritter44.security.vigenere.cryptanalysis.keylength.CoincidenceCounter;
-import com.github.rafaritter44.security.vigenere.cryptanalysis.keylength.KeyLengthFinder;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.key.FrequencyAnalyzer;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.key.length.CoincidenceCounter;
+import com.github.rafaritter44.security.vigenere.cryptanalysis.key.length.KeyLengthFinder;
 import com.github.rafaritter44.security.vigenere.cryptanalysis.util.CiphertextSplitter;
 
 @Configuration
@@ -21,14 +22,22 @@ public class CryptanalysisConfig {
 	public Cryptanalyser cryptanalyser(
 			final KeyLengthFinder keyLengthFinder,
 			final FrequencyAnalyzer frequencyAnalyzer,
-			final CiphertextSplitter ciphertextSplitter) {
-		return new Cryptanalyser(keyLengthFinder, frequencyAnalyzer, ciphertextSplitter);
+			final CiphertextSplitter ciphertextSplitter,
+			final VigenereSquare vigenereSquare) {
+		return new Cryptanalyser(keyLengthFinder, frequencyAnalyzer, ciphertextSplitter, vigenereSquare);
 	}
 	
 	@Bean
 	public FrequencyAnalyzer frequencyAnalyzer(
-			final @Qualifier("portugueseLetterFrequencies") Map<Character, Double> letterFrequencies) {
-		return new FrequencyAnalyzer(letterFrequencies);
+			final VigenereSquare vigenereSquare,
+			final @Qualifier("portugueseLetterFrequencies") Map<Character, Double> letterFrequencies,
+			final @Qualifier("alphabet") String alphabet) {
+		return new FrequencyAnalyzer(vigenereSquare, letterFrequencies, alphabet);
+	}
+	
+	@Bean
+	public VigenereSquare VigenereSquare(final @Qualifier("alphabet") String alphabet) {
+		return new VigenereSquare(alphabet);
 	}
 	
 	@Bean
@@ -47,6 +56,11 @@ public class CryptanalysisConfig {
 	@Bean
 	public FileManager fileManager() {
 		return new FileManager();
+	}
+	
+	@Bean("alphabet")
+	public String alphabet() {
+		return "abcdefghijklmnopqrstuvwxyz";
 	}
 	
 	@Bean("portugueseLetterFrequencies")
